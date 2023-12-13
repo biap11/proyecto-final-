@@ -1,0 +1,227 @@
+<!-- registro_visitantes.html (Página de Registro y Consulta de Visitantes) -->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro y Consulta de Visitantes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 200vh;
+            margin: 0;
+        }
+
+        form, table {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 50px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        input[type="datetime-local"] {
+            /* Estilo adicional para el campo datetime-local */
+            width: calc(100% - 16px);
+        }
+    </style>
+</head>
+<body>
+
+<!-- Formulario de Registro de Visitantes -->
+<form id="visitorRegistrationForm">
+    <h2>Registro de Visitantes</h2>
+
+    <label for="entryDateTime">Fecha y Hora de Ingreso:</label>
+    <input type="datetime-local" id="entryDateTime" name="entryDateTime" required>
+
+    <label for="exitDateTime">Fecha y Hora de Salida:</label>
+    <input type="datetime-local" id="exitDateTime" name="exitDateTime" required>
+
+    <label for="building">Edificio:</label>
+    <select id="building" name="building" required>
+    <option value="Edificio A">Edificio A</option>
+    <option value="Edificio B">Edificio B</option>
+
+    <label for="visitorName">Nombre del Visitante:</label>
+    <input type="text" id="visitorName" name="visitorName" required>
+
+    <label for="visitorLastName">Apellido del Visitante:</label>
+    <input type="text" id="visitorLastName" name="visitorLastName" required>
+
+    <label for="idType">Tipo de Documento de Identificación:</label>
+    <select id="idType" name="idType" required>
+        <option value="DNI">DNI</option>
+        <option value="Pasaporte">Pasaporte</option>
+    </select>
+
+    <label for="idNumber">Número de Documento de Identificación:</label>
+    <input type="text" id="idNumber" name="idNumber" required>
+
+    <label for="authorizingUser">Usuario que Autoriza:</label>
+    <input type="text" id="authorizingUser" name="authorizingUser" required>
+
+    <label for="visitReason">Motivo de Visita:</label>
+    <textarea id="visitReason" name="visitReason" rows="4" required></textarea>
+
+    <button type="button" onclick="registerVisit()">Registrar Visita</button>
+</form>
+
+<!-- Vista y Consulta de Visitas -->
+<div>
+    <h2>Consulta de Visitas</h2>
+    <label for="filterBuilding">Filtrar por Edificio:</label>
+    <select id="filterBuilding">
+        <!-- Opciones de edificios, puedes personalizar según tus necesidades -->
+        <option value="Edificio A">Edificio A</option>
+        <option value="Edificio B">Edificio B</option>
+    </select>
+    <button type="button" onclick="filterVisits()">Filtrar</button>
+
+    <!-- Tabla para mostrar los registros de visitas -->
+    <table id="visitTable">
+        <thead>
+            <tr>
+                <th>Fecha y Hora de Ingreso</th>
+                <th>Fecha y Hora de Salida</th>
+                <th>Edificio</th>
+                <th>Nombre del Visitante</th>
+                <th>Apellido del Visitante</th>
+                <th>Tipo de Documento</th>
+                <th>Número de Documento</th>
+                <th>Usuario que Autoriza</th>
+                <th>Motivo de Visita</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Aquí se mostrarán los registros de visitas -->
+        </tbody>
+    </table>
+</div>
+
+<script>
+    // Función para registrar una visita
+    function registerVisit() {
+        // Obtener los valores del formulario
+        var entryDateTime = document.getElementById("entryDateTime").value;
+        var exitDateTime = document.getElementById("exitDateTime").value;
+        var building = document.getElementById("building").value;
+        var visitorName = document.getElementById("visitorName").value;
+        var idType = document.getElementById("idType").value;
+        var idNumber = document.getElementById("idNumber").value;
+        var authorizingUser = document.getElementById("authorizingUser").value;
+        var visitReason = document.getElementById("visitReason").value;
+
+        // Validar que todos los campos estén llenos
+        if (!entryDateTime || !exitDateTime || !building || !visitorName || !idType || !idNumber || !authorizingUser || !visitReason) {
+            alert("Por favor, complete todos los campos.");
+            return;
+        }
+
+        // Crear una nueva fila en la tabla con los datos del registro
+        var table = document.getElementById("visitTable").getElementsByTagName('tbody')[0];
+        var newRow = table.insertRow(table.rows.length);
+        var cells = [];
+
+        for (var i = 0; i < 9; i++) {
+            cells[i] = newRow.insertCell(i);
+        }
+
+        cells[0].innerHTML = entryDateTime;
+        cells[1].innerHTML = exitDateTime;
+        cells[2].innerHTML = building;
+        cells[3].innerHTML = visitorName;
+        cells[4].innerHTML = visitorLastName;
+        cells[5].innerHTML = idType;
+        cells[6].innerHTML = idNumber;
+        cells[7].innerHTML = authorizingUser;
+        cells[8].innerHTML = visitReason;
+
+        // Limpiar el formulario después del registro
+        document.getElementById("visitorRegistrationForm").reset();
+        
+        // Actualizar la tabla con los datos almacenados localmente
+        updateTable();
+    }
+
+    // Función para actualizar la tabla con los datos almacenados localmente
+    function updateTable() {
+        var table = document.getElementById("visitTable").getElementsByTagName('tbody')[0];
+        var newRow = table.insertRow(table.rows.length);
+    var cells = [];
+       
+        // Obtener los registros de visitas almacenados localmente
+        var visits = JSON.parse(localStorage.getItem("visits")) || [];
+
+        // Iterar sobre los registros y agregarlos a la tabla
+        for (var i = 0; i < visits.length; i++) {
+            var newRow = table.insertRow(table.rows.length);
+            var cells = [];
+
+            for (var j = 0; j < 9; j++) {
+                cells[j] = newRow.insertCell(j);
+            }
+
+            cells[0].innerHTML = visits[i].entryDateTime;
+            cells[1].innerHTML = visits[i].exitDateTime;
+            cells[2].innerHTML = visits[i].building;
+            cells[3].innerHTML = visits[i].visitorName;
+            cells[4].innerHTML = visits[i].visitorLastName;
+            cells[5].innerHTML = visits[i].idType;
+            cells[6].innerHTML = visits[i].idNumber;
+            cells[7].innerHTML = visits[i].authorizingUser;
+            cells[8].innerHTML = visits[i].visitReason;
+
+            table.innerHTML = ""; // Limpiar la tabla
+
+        }
+    }
+
+    // Llamar a updateTable al cargar la página para mostrar los registros existentes
+    window.onload = updateTable;
+</script>
+
+</body>
+</html>

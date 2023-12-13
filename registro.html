@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Usuarios</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        form {
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Formulario de Registro de Usuarios -->
+<form id="userRegistrationForm">
+    <h2>Registro de Usuario</h2>
+    <label for="name">Nombre:</label>
+    <input type="text" id="name" name="name" required>
+
+    <label for="lastName">Apellido:</label>
+    <input type="text" id="lastName" name="lastName" required>
+
+    <label for="username">Nombre de Usuario (Correo):</label>
+    <input type="text" id="username" name="username" required>
+
+    <label for="password">Contraseña:</label>
+    <input type="password" id="password" name="password" required>
+
+    <label for="phone">Teléfono:</label>
+    <input type="tel" id="phone" name="phone" required>
+
+    <button type="button" onclick="registerUser()">Registrar Usuario</button>
+</form>
+
+<script>
+       function registerUser() {
+        // Obtener los valores del formulario
+        var name = document.getElementById("name").value;
+        var lastName = document.getElementById("lastName").value;
+        var username = document.getElementById("username").value;
+        var password = document.getElementById("password").value;
+        var phone = document.getElementById("phone").value;
+
+        // Validar que todos los campos estén llenos
+        if (!name || !lastName || !username || !password || !phone) {
+            alert("Por favor, complete todos los campos.");
+            return;
+        }
+
+        // Crear un objeto de usuario
+        var user = {
+            name: name,
+            lastName: lastName,
+            username: username,
+            password: password,
+            phone: phone
+        };
+
+        // Guardar el objeto de usuario en el almacenamiento local
+        var users = JSON.parse(localStorage.getItem("users")) || [];
+        users.push(user);
+        localStorage.setItem("users", JSON.stringify(users));
+
+        
+        alert("Usuario registrado exitosamente");
+        // Redirigir al usuario a la página de inicio de sesión después del registro
+        window.location.href = "index.html";
+    }
+</script>
+
+</body>
+</html>
